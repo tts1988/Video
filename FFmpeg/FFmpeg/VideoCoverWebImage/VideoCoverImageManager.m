@@ -86,8 +86,53 @@
     }
     else
     {
-        return url.absoluteString;
+        return [url.absoluteString stringByDeletingPathExtension];
     }
+}
+
+- (void)cachedImageExistsForURL:(NSURL *)url completion:(VCImageCheckCacheCompletionBlock)completionBlock
+{
+    NSString *key=[self cacheKeyForURL:url];
+    
+    BOOL isInMemoryCache=[self.imageCache imageFromCacheForKey:key]!=nil;
+    
+    if (isInMemoryCache)
+    {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            
+            if (completionBlock)
+            {
+                completionBlock(YES);
+            }
+            
+        });
+        
+        return;
+    }
+    
+    [self.imageCache diskImageExistsWithKey:key completion:^(BOOL isInDiskCache) {
+        
+        if (completionBlock)
+        {
+            completionBlock(isInDiskCache);
+        }
+        
+    }];
+    
+}
+
+- (void)diskImageExistsForURL:(NSURL *)url completion:(VCImageCheckCacheCompletionBlock)completionBlock
+{
+    NSString *key=[self cacheKeyForURL:url];
+    
+    [self.imageCache diskImageExistsWithKey:key completion:^(BOOL isInDiskCache) {
+        
+        if (completionBlock)
+        {
+            completionBlock(isInDiskCache);
+        }
+        
+    }];
 }
 
 - (id<VideoCoverImageOperation>)loadImageWithURL:(NSURL *)url completed:(VCInternalCompletionBlock)completedBlock

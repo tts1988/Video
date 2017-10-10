@@ -7,6 +7,7 @@
 //
 
 #import "UIImageView+VideoCoverCache.h"
+#import "UIView+VideoCoverCache.h"
 
 @implementation UIImageView (VideoCoverCache)
 
@@ -23,7 +24,7 @@
 
 - (void)vc_setImageWithURL:(NSURL *)url placeholderImage:(UIImage *)placeHolder completed:(VCExternalCompletionBlock)completedBlock
 {
-    
+    [self vc_internalSetImageWithURL:url placeholderImage:placeHolder operationKey:nil setImageBlock:nil completed:completedBlock];
 }
 
 @end

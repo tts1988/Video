@@ -32,6 +32,7 @@
 		4F23E4BD1F5E7DEE0002570C /* libavutil.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4F23E4B61F5E7DEE0002570C /* libavutil.a */; };
 		4F23E4BE1F5E7DEE0002570C /* libswresample.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4F23E4B71F5E7DEE0002570C /* libswresample.a */; };
 		4F23E4BF1F5E7DEE0002570C /* libswscale.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4F23E4B81F5E7DEE0002570C /* libswscale.a */; };
+		4F36BE191F8C7D6E007DF913 /* VideoCoverImageDownloaderOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F36BE181F8C7D6E007DF913 /* VideoCoverImageDownloaderOperation.m */; };
 		4FEABCBA1F7B8455007C9B2D /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4F23E0421F5E490E0002570C /* AVFoundation.framework */; };
 		4FEABCE81F7B906E007C9B2D /* MKAnnotationView+WebCache.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FEABCC11F7B906E007C9B2D /* MKAnnotationView+WebCache.m */; };
 		4FEABCE91F7B906E007C9B2D /* NSData+ImageContentType.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FEABCC31F7B906E007C9B2D /* NSData+ImageContentType.m */; };
@@ -196,6 +197,8 @@
 		4F23E4B61F5E7DEE0002570C /* libavutil.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libavutil.a; sourceTree = "<group>"; };
 		4F23E4B71F5E7DEE0002570C /* libswresample.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libswresample.a; sourceTree = "<group>"; };
 		4F23E4B81F5E7DEE0002570C /* libswscale.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libswscale.a; sourceTree = "<group>"; };
+		4F36BE171F8C7D6E007DF913 /* VideoCoverImageDownloaderOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VideoCoverImageDownloaderOperation.h; sourceTree = "<group>"; };
+		4F36BE181F8C7D6E007DF913 /* VideoCoverImageDownloaderOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VideoCoverImageDownloaderOperation.m; sourceTree = "<group>"; };
 		4FEABCC01F7B906E007C9B2D /* MKAnnotationView+WebCache.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "MKAnnotationView+WebCache.h"; sourceTree = "<group>"; };
 		4FEABCC11F7B906E007C9B2D /* MKAnnotationView+WebCache.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "MKAnnotationView+WebCache.m"; sourceTree = "<group>"; };
 		4FEABCC21F7B906E007C9B2D /* NSData+ImageContentType.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSData+ImageContentType.h"; sourceTree = "<group>"; };
@@ -271,6 +274,8 @@
 				4F0F21C51F8B5DE50023AC82 /* VideoCoverImageCacheConfig.m */,
 				4F0F21BC1F8B1EC20023AC82 /* VideoCoverImageCache.h */,
 				4F0F21BD1F8B1EC20023AC82 /* VideoCoverImageCache.m */,
+				4F36BE171F8C7D6E007DF913 /* VideoCoverImageDownloaderOperation.h */,
+				4F36BE181F8C7D6E007DF913 /* VideoCoverImageDownloaderOperation.m */,
 				4F0F21BF1F8B1FB60023AC82 /* VideoCoverImageDownloader.h */,
 				4F0F21C01F8B1FB60023AC82 /* VideoCoverImageDownloader.m */,
 				4F0F21B11F8B06FB0023AC82 /* VideoCoverImageManager.h */,
@@ -681,6 +686,7 @@
 				4F0F21B91F8B13590023AC82 /* UIView+VideoCoverCacheOperation.m in Sources */,
 				4F23DFA41F5E443C0002570C /* main.m in Sources */,
 				4F0F21C61F8B5DE50023AC82 /* VideoCoverImageCacheConfig.m in Sources */,
+				4F36BE191F8C7D6E007DF913 /* VideoCoverImageDownloaderOperation.m in Sources */,
 				4FEABCEB1F7B906E007C9B2D /* SDImageCache.m in Sources */,
 				4FEABCF51F7B906E007C9B2D /* UIImage+MultiFormat.m in Sources */,
 				4F0F21B31F8B06FB0023AC82 /* VideoCoverImageManager.m in Sources */,
