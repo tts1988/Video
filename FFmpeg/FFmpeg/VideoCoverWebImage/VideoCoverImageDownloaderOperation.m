@@ -43,6 +43,8 @@ typedef NSMutableDictionary<NSString *, id> VCCallbacksDictionary;
 
 @property(nonatomic,assign)AVFormatContext *formatContext;
 
+@property(nonatomic,strong)dispatch_block_t timeoutBlock;
+
 @end
 
 @implementation VideoCoverImageDownloaderOperation
@@ -171,17 +173,6 @@ typedef NSMutableDictionary<NSString *, id> VCCallbacksDictionary;
     
     if (self.isExecuting)
     {
-        dispatch_suspend(self.downloadQueue);
-        
-        if (self.formatContext!=NULL)
-        {
-            AVFormatContext *formatContext=self.formatContext;
-            
-            avformat_close_input(&formatContext);
-            
-            free(formatContext);
-        }
-        
         self.executing=NO;
     }
     
@@ -197,13 +188,22 @@ typedef NSMutableDictionary<NSString *, id> VCCallbacksDictionary;
 
 - (void)done
 {
-    self.finished=YES;
+    dispatch_async(dispatch_get_main_queue(), ^{
+        
+        self.finished=YES;
+        
+        self.executing=NO;
+        
+        self.formatContext=NULL;
+        
+        self.downloadQueue=nil;
+        
+        [self reset];
+
+        
+    });
     
-    self.executing=NO;
-    
-    self.formatContext=NULL;
-    
-    [self reset];
+   
 }
 
 - (void)reset
@@ -260,7 +260,9 @@ typedef NSMutableDictionary<NSString *, id> VCCallbacksDictionary;
 
 - (void)getVideoThumnailWithURL:(NSURL *)url
 {
-    dispatch_async(self.downloadQueue, ^{
+    __weak typeof(self) wself=self;
+    
+    dispatch_async(wself.downloadQueue, ^{
         
         NSString *filePath=url.absoluteString;
         
@@ -279,18 +281,29 @@ typedef NSMutableDictionary<NSString *, id> VCCallbacksDictionary;
         
         AVFormatContext *formatContext=avformat_alloc_context();
         
-        self.formatContext=formatContext;
+        wself.formatContext=formatContext;
         
+        if (!wself)
+        {
+            return;
+        }
+        
+        //打开视频输入流并读取头部（网络请求）
         int open_input_result=avformat_open_input(&formatContext, [filePath UTF8String], NULL, NULL);
         
         if (open_input_result!=0)
         {
             NSError *error=[NSError errorWithDomain:NSURLErrorDomain code:NSURLErrorCannotFindHost userInfo:@{NSLocalizedDescriptionKey:@"open input error"}];
             
-            [self callCompletionBlocksWithError:error];
+            [wself callCompletionBlocksWithError:error];
             
-            [self done];
+            [wself done];
             
+            return;
+        }
+        
+        if (!wself)
+        {
             return;
         }
         
@@ -314,9 +327,9 @@ typedef NSMutableDictionary<NSString *, id> VCCallbacksDictionary;
             
             avformat_close_input(&formatContext);
             
-            [self callCompletionBlocksWithError:error];
+            [wself callCompletionBlocksWithError:error];
             
-            [self done];
+            [wself done];
         }
         
         
@@ -327,9 +340,9 @@ typedef NSMutableDictionary<NSString *, id> VCCallbacksDictionary;
             
             avformat_close_input(&formatContext);
             
-            [self callCompletionBlocksWithError:error];
+            [wself callCompletionBlocksWithError:error];
             
-            [self done];
+            [wself done];
         }
         
         AVFrame *pFrame=av_frame_alloc();
@@ -358,19 +371,23 @@ typedef NSMutableDictionary<NSString *, id> VCCallbacksDictionary;
         
         while(1)
         {
-            sleep(3);
-            
-            if (av_read_frame(formatContext, packet)<0)//是否找到下一帧
+            //是否找到下一帧(网络请求)
+            if (av_read_frame(formatContext, packet)<0)
             {
                 NSError *error=[NSError errorWithDomain:NSURLErrorDomain code:0 userInfo:@{NSLocalizedDescriptionKey:@"Downloaded image has 0 frame"}];
                 
                 avformat_close_input(&formatContext);
                 
-                [self callCompletionBlocksWithError:error];
+                [wself callCompletionBlocksWithError:error];
                 
-                [self done];
+                [wself done];
                 
                 break;
+            }
+            
+            if (!wself)
+            {
+                return;
             }
             
             if (packet->stream_index==videoStream)
@@ -383,9 +400,9 @@ typedef NSMutableDictionary<NSString *, id> VCCallbacksDictionary;
                     
                     avformat_close_input(&formatContext);
                     
-                    [self callCompletionBlocksWithError:error];
+                    [wself callCompletionBlocksWithError:error];
                     
-                    [self done];
+                    [wself done];
                     
                     break;
                 }
@@ -425,9 +442,9 @@ typedef NSMutableDictionary<NSString *, id> VCCallbacksDictionary;
                     
                     avformat_close_input(&formatContext);
                     
-                    [self callCompletionBlocksWithImage:image imageData:imageData error:nil finished:YES];
+                    [wself callCompletionBlocksWithImage:image imageData:imageData error:nil finished:YES];
                     
-                    [self done];
+                    [wself done];
                     
                     break;
                 }
@@ -438,15 +455,33 @@ typedef NSMutableDictionary<NSString *, id> VCCallbacksDictionary;
                 
                 avformat_close_input(&formatContext);
                 
-                [self callCompletionBlocksWithError:error];
+                [wself callCompletionBlocksWithError:error];
                 
-                [self done];
+                [wself done];
                 
                 break;
             }
         }
 
     });
+    
+    dispatch_block_t timeoutBlock=^{
+        
+        if (wself)
+        {
+            dispatch_async(dispatch_get_main_queue(), ^{
+                
+                [wself cancel];
+                
+            });
+        }
+        
+    };
+    
+    self.timeoutBlock=timeoutBlock;
+    
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(wself.request.timeoutInterval * NSEC_PER_SEC)), self.downloadQueue, timeoutBlock);
+    
 }
 
 @end
