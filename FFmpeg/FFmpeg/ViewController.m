@@ -24,6 +24,10 @@
 
 @property(nonatomic,weak)IBOutlet UIImageView *imageView3;
 
+@property(nonatomic,weak)IBOutlet UILabel *modificationDate;
+
+@property(nonatomic,weak)IBOutlet UILabel *expirationData;
+
 @end
 
 @implementation ViewController
@@ -32,9 +36,17 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view, typically from a nib.
     
-    NSString *url=@"http://www.86ps.com/imgWeb/psd/hf_fj/FJ_159.jpg";
+    NSUserDefaults *defaults=[NSUserDefaults standardUserDefaults];
     
-    [self.imageView3 sd_setImageWithURL:[NSURL URLWithString:url] placeholderImage:nil options:SDWebImageRefreshCached];
+    NSDate *modificationDate=[defaults valueForKey:@"modificationDate"];
+    
+    NSDate *expirationData=[defaults valueForKey:@"expirationData"];
+
+    self.modificationDate.text=[NSString stringWithFormat:@"modificationDate=%@",modificationDate];
+    
+    self.expirationData.text=[NSString stringWithFormat:@"expirationData=%@",expirationData];
+
+    [self pressFFmpegButton:nil];
 }
 
 - (IBAction)pressButton:(id)sender

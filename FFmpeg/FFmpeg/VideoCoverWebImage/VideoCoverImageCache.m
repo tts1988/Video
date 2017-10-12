@@ -623,7 +623,7 @@ FOUNDATION_STATIC_INLINE NSUInteger VCCacheCostForImage(UIImage *image) {
             [_fileManager removeItemAtURL:fileURL error:nil];
         }
         
-        if (self.config.maxCacheAge>0&&currentCacheSize>self.config.maxCacheSize/2)
+        if (self.config.maxCacheSize>0&&currentCacheSize>self.config.maxCacheSize/2)
         {
             const NSUInteger desiredCacheSize=self.config.maxCacheSize/2;
             
