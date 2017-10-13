@@ -34,6 +34,7 @@
 		4F4538241F906B5B00AAB38C /* libavutil.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4F45381D1F906B5B00AAB38C /* libavutil.a */; };
 		4F4538251F906B5B00AAB38C /* libswresample.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4F45381E1F906B5B00AAB38C /* libswresample.a */; };
 		4F4538261F906B5B00AAB38C /* libswscale.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4F45381F1F906B5B00AAB38C /* libswscale.a */; };
+		4F45392D1F90C8FF00AAB38C /* AudioEditTool.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F45392C1F90C8FF00AAB38C /* AudioEditTool.m */; };
 		4FEABCBA1F7B8455007C9B2D /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4F23E0421F5E490E0002570C /* AVFoundation.framework */; };
 		4FEABCE81F7B906E007C9B2D /* MKAnnotationView+WebCache.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FEABCC11F7B906E007C9B2D /* MKAnnotationView+WebCache.m */; };
 		4FEABCE91F7B906E007C9B2D /* NSData+ImageContentType.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FEABCC31F7B906E007C9B2D /* NSData+ImageContentType.m */; };
@@ -212,6 +213,8 @@
 		4F45381D1F906B5B00AAB38C /* libavutil.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libavutil.a; sourceTree = "<group>"; };
 		4F45381E1F906B5B00AAB38C /* libswresample.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libswresample.a; sourceTree = "<group>"; };
 		4F45381F1F906B5B00AAB38C /* libswscale.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libswscale.a; sourceTree = "<group>"; };
+		4F45392B1F90C8FF00AAB38C /* AudioEditTool.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AudioEditTool.h; sourceTree = "<group>"; };
+		4F45392C1F90C8FF00AAB38C /* AudioEditTool.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AudioEditTool.m; sourceTree = "<group>"; };
 		4FEABCC01F7B906E007C9B2D /* MKAnnotationView+WebCache.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "MKAnnotationView+WebCache.h"; sourceTree = "<group>"; };
 		4FEABCC11F7B906E007C9B2D /* MKAnnotationView+WebCache.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "MKAnnotationView+WebCache.m"; sourceTree = "<group>"; };
 		4FEABCC21F7B906E007C9B2D /* NSData+ImageContentType.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSData+ImageContentType.h"; sourceTree = "<group>"; };
@@ -324,6 +327,7 @@
 		4F23DFA11F5E443C0002570C /* FFmpeg */ = {
 			isa = PBXGroup;
 			children = (
+				4F45392A1F90C8C500AAB38C /* AudioEdit */,
 				4F4537A51F906B5B00AAB38C /* FFmpeg-iOS */,
 				4F0F21AD1F8B01520023AC82 /* VideoCoverWebImage */,
 				4FEABCBC1F7B906E007C9B2D /* SDWebImage */,
@@ -569,6 +573,15 @@
 			path = lib;
 			sourceTree = "<group>";
 		};
+		4F45392A1F90C8C500AAB38C /* AudioEdit */ = {
+			isa = PBXGroup;
+			children = (
+				4F45392B1F90C8FF00AAB38C /* AudioEditTool.h */,
+				4F45392C1F90C8FF00AAB38C /* AudioEditTool.m */,
+			);
+			path = AudioEdit;
+			sourceTree = "<group>";
+		};
 		4FEABCBC1F7B906E007C9B2D /* SDWebImage */ = {
 			isa = PBXGroup;
 			children = (
@@ -698,6 +711,7 @@
 				4FEABCF01F7B906E007C9B2D /* SDWebImageDownloaderOperation.m in Sources */,
 				4FEABCEA1F7B906E007C9B2D /* NSImage+WebCache.m in Sources */,
 				4FEABCF31F7B906E007C9B2D /* UIButton+WebCache.m in Sources */,
+				4F45392D1F90C8FF00AAB38C /* AudioEditTool.m in Sources */,
 				4FEABCFA1F7B906E007C9B2D /* UIView+WebCacheOperation.m in Sources */,
 				4FEABCF21F7B906E007C9B2D /* SDWebImagePrefetcher.m in Sources */,
 				4FEABCEF1F7B906E007C9B2D /* SDWebImageDownloader.m in Sources */,
