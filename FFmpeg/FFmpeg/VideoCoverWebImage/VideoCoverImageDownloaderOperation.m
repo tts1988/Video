@@ -241,7 +241,7 @@ typedef NSMutableDictionary<NSString *, id> VCCallbacksDictionary;
 
 - (void)callCompletionBlocksWithError:(NSError *)error
 {
-    [self callCompletionBlocksWithImage:nil imageData:nil error:nil finished:YES];
+    [self callCompletionBlocksWithImage:nil imageData:nil error:error finished:YES];
 }
 
 - (void)callCompletionBlocksWithImage:(UIImage *)image imageData:(NSData *)imageData error:(NSError *)error finished:(BOOL)finished
@@ -314,6 +314,8 @@ typedef NSMutableDictionary<NSString *, id> VCCallbacksDictionary;
             if (formatContext->streams[i]->codec->codec_type==AVMEDIA_TYPE_VIDEO)
             {
                 videoStream=i;
+                
+                break;
             }
         }
         
@@ -349,13 +351,15 @@ typedef NSMutableDictionary<NSString *, id> VCCallbacksDictionary;
         
         AVFrame *pFrameRGB=av_frame_alloc();
         
-        struct SwsContext *img_convert_ctx=sws_getContext(codecContext->width, codecContext->height, AV_PIX_FMT_YUV420P, codecContext->width, codecContext->height, PIX_FMT_RGB24, SWS_FAST_BILINEAR, NULL, NULL, NULL);
+        struct SwsContext *img_convert_ctx=sws_getContext(codecContext->width, codecContext->height, AV_PIX_FMT_YUV420P, codecContext->height, codecContext->width, AV_PIX_FMT_RGB24, SWS_FAST_BILINEAR, NULL, NULL, NULL);
         
-        int numBytes=avpicture_get_size(PIX_FMT_RGB24, codecContext->width, codecContext->height);
+    
+        
+        int numBytes=avpicture_get_size(AV_PIX_FMT_RGB24, codecContext->width, codecContext->height);
         
         uint8_t *out_buffer=av_malloc(numBytes*sizeof(uint8_t));
         
-        avpicture_fill((AVPicture *)pFrameRGB, out_buffer, PIX_FMT_BGR24, codecContext->width, codecContext->height);
+        avpicture_fill((AVPicture *)pFrameRGB, out_buffer, AV_PIX_FMT_BGR24, codecContext->width, codecContext->height);
         
         int y_size=codecContext->width*codecContext->height;
         
@@ -449,18 +453,7 @@ typedef NSMutableDictionary<NSString *, id> VCCallbacksDictionary;
                     break;
                 }
             }
-            else
-            {
-                NSError *error=[NSError errorWithDomain:NSURLErrorDomain code:NSURLErrorCannotDecodeContentData userInfo:@{NSLocalizedDescriptionKey:@"can not get picture"}];
-                
-                avformat_close_input(&formatContext);
-                
-                [wself callCompletionBlocksWithError:error];
-                
-                [wself done];
-                
-                break;
-            }
+
         }
 
     });

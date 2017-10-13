@@ -219,7 +219,10 @@
                 {
                     if (downloadedImage&&finished)
                     {
-                        [self.imageCache storeImage:downloadedImage imageData:downloadedData forKey:key toDisk:YES completion:nil];
+                        if ([key hasPrefix:@"http"])//网络图片才进行缓存
+                        {
+                            [self.imageCache storeImage:downloadedImage imageData:downloadedData forKey:key toDisk:YES completion:nil];
+                        }
                     }
                     
                     [self callCompletionBlockForOperation:strongOperation completion:completedBlock image:downloadedImage data:downloadedData error:nil cacheType:VideoCoverImageCacheTypeNone finished:finished url:url];
